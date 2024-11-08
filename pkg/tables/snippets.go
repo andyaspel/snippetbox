@@ -6,6 +6,10 @@ import (
 	_ "github.com/glebarez/go-sqlite"
 )
 
+type SnippetModel struct {
+	db *sql.DB
+}
+
 func CreateTable(db *sql.DB) (sql.Result, error) {
 	sql := `CREATE TABLE IF NOT EXISTS countries (
         id INTEGER PRIMARY KEY,
