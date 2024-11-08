@@ -1,0 +1,30 @@
+{{define "base"}}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta
+  name="description"
+  content="A simple app to share snippets of info that you think might be helpful to others">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/style.css" type="text/css">
+    <title>{{template "title" .}}</title>
+</head>
+
+<body>
+    <header>
+        <h1><a href="/" aria-label="Start using Snippetbox">Snippetbox</a>
+        </h1>
+    </header>
+    {{template "nav-bar"}}
+    <main>
+        <section>
+            {{template "body" .}}
+        </section>
+    </main>
+    {{template "footer" .}}
+</body>
+
+</html>
+{{end}}

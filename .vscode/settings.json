@@ -1,0 +1,7 @@
+{
+    "html.format.contentUnformatted": "pre,code,textarea",
+    "editor.formatOnType": true,
+    "go-template.languages": [
+        "tmpl"
+    ]
+}
