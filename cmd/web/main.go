@@ -35,7 +35,7 @@ func main() {
 	errorLog.Fatal(err)
 
 	// Connect to the SQLite database
-	db, err := sql.Open("sqlite", "./snippets.db?_pragma=foreign_keys(1)")
+	db, err := sql.Open("sqlite", "./db/snippets.db?_pragma=foreign_keys(1)")
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -43,11 +43,6 @@ func main() {
 
 	defer db.Close()
 
-	_, err = CreateTable(db)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
 	fmt.Println("Connected to the SQLite database successfully.")
 
 	fmt.Println("Table countries was created successfully.")
