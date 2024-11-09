@@ -2,15 +2,15 @@ package models
 
 import (
 	"errors"
-	"time"
+
+	"gorm.io/gorm"
 )
 
 var ErrorRecord = errors.New("models: No mathching record found")
 
 type Snippet struct {
-	ID        uint
-	Title     string
-	Content   string
-	CreatedAt time.Time
-	Expires   time.Time
+	gorm.Model
+	Title   string
+	Content string
+	Expires string
 }

@@ -31,11 +31,6 @@ func main() {
 		errorLog.Fatal(err)
 	}
 
-	err = db.AutoMigrate(&Snippet{})
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	app := &application{
 		errorLog: errorLog,
 		infoLog:  infoLog,
@@ -49,7 +44,7 @@ func main() {
 	}
 
 	infoLog.Printf("Starting server on %s", *addr)
-	err := srv.ListenAndServe()
+	err = srv.ListenAndServe()
 	errorLog.Fatal(err)
 
 }
