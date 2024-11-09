@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/andyaspel/snippetbox/pkg/models/sqlte"
+
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -13,7 +15,7 @@ import (
 type application struct {
 	errorLog *log.Logger
 	infoLog  *log.Logger
-	snippets *sqlite.SnippetModel
+	snippets *sqlte.SnippetModel
 }
 
 func main() {
@@ -29,7 +31,7 @@ func main() {
 		errorLog.Fatal(err)
 	}
 
-	err = db.AutoMigrate(&Snippet)
+	err = db.AutoMigrate(&Snippet{})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -37,7 +39,7 @@ func main() {
 	app := &application{
 		errorLog: errorLog,
 		infoLog:  infoLog,
-		snippets: &sqlite.SnippetModel{DB: db},
+		snippets: &sqlte.SnippetModel{DB: db},
 	}
 
 	srv := &http.Server{
