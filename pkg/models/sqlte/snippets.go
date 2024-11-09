@@ -24,7 +24,7 @@ func (s *SnippetModel) Insert(title, content, expires string) (int, error) {
 
 	//   result.Error        // returns error
 	//   result.RowsAffected // returns inserted records count
-	fmt.Println("\nID:", snippet.ID)
+	fmt.Println("ID:", snippet.ID)
 	return int(snippet.ID), nil
 }
 
