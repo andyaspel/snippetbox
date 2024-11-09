@@ -1,27 +1,43 @@
 package main
 
 import (
-	"database/sql"
 	"flag"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
 
-	_ "github.com/glebarez/go-sqlite"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
+type application struct {
+	errorLog *log.Logger
+	infoLog  *log.Logger
+	snippets *sqlite.SnippetModel
+}
+
 func main() {
-	// var db  *sql.DB
+
 	addr := flag.String("addr", ":4000", "HTTP network address")
 	flag.Parse()
-	// snippets := db
+
 	infoLog := log.New(os.Stdout, "\nINFO:\n\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "\nERROR:\n\t", log.Ldate|log.Ltime|log.Lshortfile)
-	// var snippets *sql.DB
+
+	db, err := connectToSQLite()
+	if err != nil {
+		errorLog.Fatal(err)
+	}
+
+	err = db.AutoMigrate(&Snippet)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	app := &application{
 		errorLog: errorLog,
 		infoLog:  infoLog,
+		snippets: &sqlite.SnippetModel{DB: db},
 	}
 
 	srv := &http.Server{
@@ -34,15 +50,13 @@ func main() {
 	err := srv.ListenAndServe()
 	errorLog.Fatal(err)
 
-	// Connect to the SQLite database
-	db, err := sql.Open(
-		"sqlite",
-		"db/snippets.db?_pragma=foreign_keys(1)",
-	)
+}
+
+func connectToSQLite() (*gorm.DB, error) {
+	db, err := gorm.Open(sqlite.Open("./db/snippets.db"), &gorm.Config{})
 	if err != nil {
-		fmt.Println(err)
-		return
+		return nil, err
 	}
 
-	defer db.Close()
+	return db, nil
 }

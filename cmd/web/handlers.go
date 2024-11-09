@@ -2,16 +2,10 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"strconv"
 	"text/template"
 )
-
-type application struct {
-	errorLog *log.Logger
-	infoLog  *log.Logger
-}
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
@@ -51,9 +45,19 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		w.Header().Set("Allow", "POST")
 		app.clientError(w, http.StatusMethodNotAllowed)
+		return
 	}
-	w.Write([]byte("\n\tCreate a new snippet...\n"))
+	title := "O snail"
+	content := "O snail\nClimb Mount Fuji,\nBut slowly, slowly!\n\n– Kobayashi"
+	expires := "7"
 
+	id, err := app.snippets.Insert(title, content, expires)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+	// Redirect the user to the relevant page for the snippet.
+	http.Redirect(w, r, fmt.Sprintf("/snippet?id=%d", id), http.StatusSeeOther)
 }
 
 func (app *application) about(w http.ResponseWriter, r *http.Request) {
