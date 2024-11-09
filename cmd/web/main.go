@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/andyaspel/snippetbox/pkg/tables"
 	_ "github.com/glebarez/go-sqlite"
 )
 
@@ -23,7 +22,6 @@ func main() {
 	app := &application{
 		errorLog: errorLog,
 		infoLog:  infoLog,
-		snippets: tables.CreateTable,
 	}
 
 	srv := &http.Server{
@@ -47,24 +45,4 @@ func main() {
 	}
 
 	defer db.Close()
-
-	_, err = app.CreateTable(db)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	fmt.Println("Connected to the SQLite database successfully.")
-
-	fmt.Println("Table countries was created successfully.")
-
-	// Get the version of SQLite
-	var sqliteVersion string
-	err = db.QueryRow("select sqlite_version()").Scan(&sqliteVersion)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	fmt.Println(sqliteVersion)
 }

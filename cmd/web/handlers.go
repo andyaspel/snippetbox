@@ -6,14 +6,11 @@ import (
 	"net/http"
 	"strconv"
 	"text/template"
-
-	"github.com/andyaspel/snippetbox/pkg/tables"
 )
 
 type application struct {
 	errorLog *log.Logger
 	infoLog  *log.Logger
-	snippets *tables.SnippetModel
 }
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
