@@ -2,7 +2,6 @@ package sqlte
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/andyaspel/snippetbox/pkg/models"
 	"gorm.io/gorm"
@@ -13,34 +12,30 @@ type SnippetModel struct {
 }
 
 func (s *SnippetModel) Insert(title, content, expires string) (int, error) {
-	var Snippet models.Snippet
-	err := s.DB.AutoMigrate(&Snippet)
-	if err != nil {
-		log.Fatal(err)
-	}
+
 	snippet := &models.Snippet{Title: title, Content: content, Expires: expires}
 
 	s.DB.Create(&snippet) // pass a slice to insert multiple row
-
+	s.DB.Save(&snippet)
 	fmt.Println("ID:", snippet.ID)
 	return int(snippet.ID), nil
 }
 
 func (s *SnippetModel) Get(id int) (*models.Snippet, error) {
 	var result models.Snippet
-	// result.ID = int(id)
+	// var err error
 	snippet := &models.Snippet{}
-	// snippet := &models.Snippet{id}
-	s.DB.Model(&snippet).First(&result)
-	//	Db.models.snippet(&result)
+	result.ID = uint(id)
+	snippet.ID = result.ID
+	err := s.DB.Model(&snippet).First(&result)
+	// err := models.ErrorRecord
+	if err != nil {
+		fmt.Println("hello", result)
+		return &result, gorm.ErrRecordNotFound
+	}
+	fmt.Printf("\nTEST:\n%v\n%v\n%v\n", result.ID, snippet.Title, snippet.Content)
+	return snippet, nil
 
-	// if err == sql.ErrNoRows {
-	// 	return nil, models.ErrNoRecord
-	// } else if err != nil {
-	// 	return nil, err
-	// }
-
-	return &result, nil
 }
 
 func (s *SnippetModel) Latest() ([]*models.Snippet, error) {

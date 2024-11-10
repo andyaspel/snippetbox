@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"text/template"
 
-	"github.com/andyaspel/snippetbox/pkg/models"
+	"gorm.io/gorm"
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
@@ -36,20 +36,25 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 
 func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.URL.Query().Get("id"))
+	fmt.Println("\nSHOW:\t", id)
 	if err != nil || id < 1 {
 		app.notFound(w)
-	}
-	s, err := app.snippets.Get(id)
-	if err == models.ErrorRecord {
-		app.notFound(w)
+		fmt.Println("SNIPPET NOT FOUND 1")
 		return
-	} else if err != nil {
-		app.serverError(w, err)
+	}
+	fmt.Println("Id LEGAL")
+	s, err := app.snippets.Get(id)
+	// err := models.ErrorRecord
+	// fmt.Println(err)
+	if err == gorm.ErrRecordNotFound {
+		fmt.Println("out", s)
+		// app.notFound(w)
 		return
 	}
 
-	//
-	fmt.Fprintf(w, "\t%v\n\t%v\n\t%v\n", s.Title, s.Content, s.Expires)
+	// fmt.Println("RETURN SNIPPET FOUND", s.ID, id, s.Title)
+
+	fmt.Fprintf(w, "\t%s\n\t%s\n\t%s\n", s.Title, s.Content, s.Expires)
 
 	// fmt.Fprintf(w, "\n\tDisplay a specific snippet with Id: %d...\n\t %v", id, s)
 
@@ -61,7 +66,8 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 		app.clientError(w, http.StatusMethodNotAllowed)
 		return
 	}
-	title := "O snail"
+
+	title := "wwwwwwooooooooo"
 	content := "O snail\nClimb Mount Fuji,\nBut slowly, slowly!\nKobayashi"
 	expires := "7"
 
@@ -70,8 +76,13 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, err)
 		return
 	}
+	// app.snippets.Get(id)
+
+	fmt.Println("Title: ", title, id)
+	// app.snippets.Get(id)
 	// Redirect the user to the relevant page for the snippet.
 	http.Redirect(w, r, fmt.Sprintf("/snippet?id=%d", id), http.StatusSeeOther)
+
 }
 
 func (app *application) about(w http.ResponseWriter, r *http.Request) {
