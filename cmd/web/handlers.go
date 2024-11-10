@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"strconv"
 	"text/template"
+
+	"github.com/andyaspel/snippetbox/pkg/models"
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
@@ -37,7 +39,19 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 	if err != nil || id < 1 {
 		app.notFound(w)
 	}
-	fmt.Fprintf(w, "\n\tDisplay a specific snippet with Id: %d...\n", id)
+	s, err := app.snippets.Get(id)
+	if err == models.ErrorRecord {
+		app.notFound(w)
+		return
+	} else if err != nil {
+		app.serverError(w, err)
+		return
+	}
+
+	//
+	fmt.Fprintf(w, "\t%v\n\t%v\n\t%v\n", s.Title, s.Content, s.Expires)
+
+	// fmt.Fprintf(w, "\n\tDisplay a specific snippet with Id: %d...\n\t %v", id, s)
 
 }
 
