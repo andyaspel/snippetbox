@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/andyaspel/snippetbox/pkg/models"
 	"github.com/andyaspel/snippetbox/pkg/models/sqlte"
 
 	"gorm.io/driver/sqlite"
@@ -29,6 +30,11 @@ func main() {
 	db, err := connectToSQLite()
 	if err != nil {
 		errorLog.Fatal(err)
+	}
+	var Snippet models.Snippet
+	err = db.AutoMigrate(&Snippet)
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	app := &application{
