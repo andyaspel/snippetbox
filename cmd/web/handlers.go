@@ -47,7 +47,7 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 	// err := models.ErrorRecord
 	// fmt.Println(err)
 	if err == gorm.ErrRecordNotFound {
-		fmt.Println("out", s)
+		fmt.Println("\nout", s)
 		// app.notFound(w)
 		return
 	}
