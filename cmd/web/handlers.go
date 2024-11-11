@@ -34,27 +34,18 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 
 func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.URL.Query().Get("id"))
-	fmt.Println("\nSHOW:\t", id)
 	if err != nil || id < 1 {
 		app.notFound(w)
-		fmt.Println("SNIPPET NOT FOUND 1")
+		fmt.Println("NOT A VALID ID")
 		return
 	}
-	fmt.Println("Id LEGAL")
 	s, err := app.snippets.Get(id)
-	fmt.Println("-------", s, err)
 	if err != nil && s.Title == "" {
-		fmt.Println("\nout", s.ID)
 		app.notFound(w)
+		fmt.Println("RECORD NOT FOUND with ID - ", id)
 		return
 	}
-	fmt.Println("________")
-
-	// fmt.Println("RETURN SNIPPET FOUND", s.ID, id, s.Title)
-
 	fmt.Fprintf(w, "Found Record:\t%v\nTitle:\n\t\t%s\nContent:\n\t\t%s\nExpires in:\n\t\t%s\n", s.ID, s.Title, s.Content, s.Expires)
-
-	// fmt.Fprintf(w, "\n\tDisplay a specific snippet with Id: %d...\n\t %v", id, s)
 }
 
 func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
@@ -63,20 +54,14 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 		app.clientError(w, http.StatusMethodNotAllowed)
 		return
 	}
-
-	title := "wwwwwwooooooooo"
-	content := "O snail\nClimb Mount Fuji,\nBut slowly, slowly!\nKobayashi"
-	expires := "7"
-
+	title := "hmrn"
+	content := "O snail\n\tClimb Mount Fuji,\n\tBut slowly, slowly!\n\tKobayashi"
+	expires := "8"
 	id, err := app.snippets.Insert(title, content, expires)
 	if err != nil {
 		app.serverError(w, err)
 		return
 	}
-	// app.snippets.Get(id)
-
-	fmt.Println("Title: ", title, id)
-	// app.snippets.Get(id)
 	// Redirect the user to the relevant page for the snippet.
 	http.Redirect(w, r, fmt.Sprintf("/snippet?id=%d", id), http.StatusSeeOther)
 

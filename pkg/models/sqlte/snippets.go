@@ -12,33 +12,26 @@ type SnippetModel struct {
 }
 
 func (s *SnippetModel) Insert(title, content, expires string) (int, error) {
-
 	snippet := &models.Snippet{Title: title, Content: content, Expires: expires}
-
 	s.DB.Create(&snippet) // pass a slice to insert multiple row
 	s.DB.Save(&snippet)
-	fmt.Println("ID:", snippet.ID)
+	fmt.Printf("\nNew record created on %v\nID: %d\t\tTitle: %s\nContent: %s\nExpires: %s\n", snippet.CreatedAt, snippet.ID, title, content, expires)
 	return int(snippet.ID), nil
 }
 
 func (s *SnippetModel) Get(id int) (*models.Snippet, error) {
 	var result models.Snippet
-	// var err error
 	snippet := &models.Snippet{}
 	result.ID = uint(id)
 	snippet.ID = result.ID
-	errr := models.ErrorRecord
-
+	notFound := models.ErrorRecord
 	err := s.DB.Model(&snippet).First(&result)
-
-	// err := models.ErrorRecord
 	if err != nil {
-		fmt.Println("hello", result)
-		return &result, gorm.ErrRecordNotFound
+		return &result, notFound
 	}
-	fmt.Printf("\nTEST:\n%v\n%v\n%v\n", result.ID, result.Title, result.Content)
-	return &result, errr
+	fmt.Printf("\nID: %d\nTitle: %s\nContent: %s\nExpires: %s\n", result.ID, result.Title, result.Content, result.Expires)
 
+	return &result, notFound
 }
 
 func (s *SnippetModel) Latest() ([]*models.Snippet, error) {
