@@ -27,14 +27,17 @@ func (s *SnippetModel) Get(id int) (*models.Snippet, error) {
 	snippet := &models.Snippet{}
 	result.ID = uint(id)
 	snippet.ID = result.ID
+	errr := models.ErrorRecord
+
 	err := s.DB.Model(&snippet).First(&result)
+
 	// err := models.ErrorRecord
 	if err != nil {
 		fmt.Println("hello", result)
 		return &result, gorm.ErrRecordNotFound
 	}
-	fmt.Printf("\nTEST:\n%v\n%v\n%v\n", result.ID, snippet.Title, snippet.Content)
-	return snippet, nil
+	fmt.Printf("\nTEST:\n%v\n%v\n%v\n", result.ID, result.Title, result.Content)
+	return &result, errr
 
 }
 

@@ -5,8 +5,6 @@ import (
 	"net/http"
 	"strconv"
 	"text/template"
-
-	"gorm.io/gorm"
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
@@ -44,20 +42,19 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Println("Id LEGAL")
 	s, err := app.snippets.Get(id)
-	// err := models.ErrorRecord
-	// fmt.Println(err)
-	if err == gorm.ErrRecordNotFound {
-		fmt.Println("\nout", s)
-		// app.notFound(w)
+	fmt.Println("-------", s, err)
+	if err != nil && s.Title == "" {
+		fmt.Println("\nout", s.ID)
+		app.notFound(w)
 		return
 	}
+	fmt.Println("________")
 
 	// fmt.Println("RETURN SNIPPET FOUND", s.ID, id, s.Title)
 
-	fmt.Fprintf(w, "\t%s\n\t%s\n\t%s\n", s.Title, s.Content, s.Expires)
+	fmt.Fprintf(w, "Found Record:\t%v\nTitle:\n\t\t%s\nContent:\n\t\t%s\nExpires in:\n\t\t%s\n", s.ID, s.Title, s.Content, s.Expires)
 
 	// fmt.Fprintf(w, "\n\tDisplay a specific snippet with Id: %d...\n\t %v", id, s)
-
 }
 
 func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
