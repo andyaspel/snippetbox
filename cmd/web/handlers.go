@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"strconv"
 	"text/template"
+
+	"github.com/andyaspel/snippetbox/pkg/models"
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
@@ -12,23 +14,18 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		app.notFound(w)
 		return
 	}
-
-	files := []string{
-		"./ui/html/home.page.tmpl",
-		"./ui/html/base.layout.tmpl",
-		"./ui/html/footer.partial.tmpl",
-		"./ui/html/nav-bar.partial.tmpl",
-	}
-
-	ts, err := template.ParseFiles(files...)
-	if err != nil {
+	s, err := app.snippets.Latest()
+	if err == models.ErrorRecords {
 		app.serverError(w, err)
 		return
 	}
-	err = ts.Execute(w, nil)
-	if err != nil {
-		app.serverError(w, err)
-		return
+	for _, snippet := range s {
+		if snippet.ID == 0 {
+			break
+		}
+		// fmt.Fprintf(w, "%v\n", *snippet)
+		fmt.Fprintf(w, "Last 10 records:\tID:%v\nTitle:\n\t\t%s\nContent:\n\t\t%s\nExpires in:\n\t\t%s\n", snippet.ID, snippet.Title, snippet.Content, snippet.Expires)
+
 	}
 }
 

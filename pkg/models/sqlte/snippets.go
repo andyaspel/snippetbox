@@ -25,15 +25,22 @@ func (s *SnippetModel) Get(id int) (*models.Snippet, error) {
 	result.ID = uint(id)
 	snippet.ID = result.ID
 	notFound := models.ErrorRecord
-	err := s.DB.Model(&snippet).First(&result)
+	err := s.DB.Model(&snippet).First(&result, id)
 	if err != nil {
 		return &result, notFound
 	}
 	fmt.Printf("\nID: %d\nTitle: %s\nContent: %s\nExpires: %s\n", result.ID, result.Title, result.Content, result.Expires)
 
-	return &result, notFound
+	return &result, nil
 }
 
 func (s *SnippetModel) Latest() ([]*models.Snippet, error) {
-	return nil, nil
+	results := []*models.Snippet{}
+	snippet := &models.Snippet{}
+	s.DB.Model(&snippet).Limit(10).Order("id desc").Find(&results)
+	if len(results) < 1 {
+		return results, models.ErrorRecords
+	}
+	results = append(results, &models.Snippet{})
+	return results, nil
 }
