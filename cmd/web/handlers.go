@@ -19,13 +19,12 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, err)
 		return
 	}
-	for _, snippet := range s {
-		if snippet.ID == 0 {
+
+	for _, s := range s {
+		if s.ID == 0 {
 			break
 		}
-		// fmt.Fprintf(w, "%v\n", *snippet)
-		fmt.Fprintf(w, "Last 10 records:\tID:%v\nTitle:\n\t\t%s\nContent:\n\t\t%s\nExpires in:\n\t\t%s\n", snippet.ID, snippet.Title, snippet.Content, snippet.Expires)
-
+		fmt.Fprintf(w, "Last 10 records:\tID:%v\nTitle:\n\t\t%s\nContent:\n\t\t%s\nExpires in:\n\t\t%s\n", s.ID, s.Title, s.Content, s.Expires)
 	}
 }
 
@@ -36,13 +35,30 @@ func (app *application) showSnippet(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("NOT A VALID ID")
 		return
 	}
-	s, err := app.snippets.Get(id)
-	if err != nil && s.Title == "" {
+	s, err := app.snippets.Get(id) // Get the record
+	if err != nil {
 		app.notFound(w)
 		fmt.Println("RECORD NOT FOUND with ID - ", id)
 		return
 	}
-	fmt.Fprintf(w, "Found Record:\t%v\nTitle:\n\t\t%s\nContent:\n\t\t%s\nExpires in:\n\t\t%s\n", s.ID, s.Title, s.Content, s.Expires)
+	data := &templateData{Snippet: s}
+
+	files := []string{
+		"./ui/html/show.page.tmpl",
+		"./ui/html/base.layout.tmpl",
+		"./ui/html/footer.partial.tmpl",
+		"./ui/html/nav-bar.partial.tmpl",
+	}
+	ts, err := template.ParseFiles(files...)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+	err = ts.Execute(w, data)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
 }
 
 func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
@@ -51,8 +67,12 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 		app.clientError(w, http.StatusMethodNotAllowed)
 		return
 	}
-	title := "hmrn"
-	content := "O snail\n\tClimb Mount Fuji,\n\tBut slowly, slowly!\n\tKobayashi"
+	title := "FUNCTION"
+	content := `func (s *SnippetModel) Insert(title, content, expires string) (int, error) {
+	snippet := &models.Snippet{Title: title, Content: content, Expires: expires}
+s.DB.Create(&snippet)	s.DB.Save(&snippet)	return int(snippet.ID), nil
+}
+`
 	expires := "8"
 	id, err := app.snippets.Insert(title, content, expires)
 	if err != nil {

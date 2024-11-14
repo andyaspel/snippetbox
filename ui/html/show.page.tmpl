@@ -1,0 +1,20 @@
+{{template "base" .}}
+
+{{define "title"}}Snippet ID:{{.Snippet.ID}}{{end}}
+{{define "body"}}
+{{with .Snippet}}
+<section class="snippet">
+    <article class="card-lg">
+        <div class="metadata">
+            <strong>{{.Title}}</strong>
+            <span>ID: {{.ID}}</span>
+        </div>
+        <pre class="content"><code>{{.Content}}</code></pre>
+        <div class="metadata">
+            <time>Created: {{.CreatedAt}}</time>
+            <time>Expires: {{.Expires}}</time>
+        </div>
+    </article>
+</section>
+{{end}}
+{{end}}

@@ -20,27 +20,41 @@ func (s *SnippetModel) Insert(title, content, expires string) (int, error) {
 }
 
 func (s *SnippetModel) Get(id int) (*models.Snippet, error) {
-	var result models.Snippet
-	snippet := &models.Snippet{}
-	result.ID = uint(id)
-	snippet.ID = result.ID
-	notFound := models.ErrorRecord
-	err := s.DB.Model(&snippet).First(&result, id)
+	var snippet models.Snippet
+	err := s.DB.Model(&snippet).Where("id = ?", id).First(&snippet).Error
 	if err != nil {
-		return &result, notFound
+		return nil, models.ErrorRecord
 	}
-	fmt.Printf("\nID: %d\nTitle: %s\nContent: %s\nExpires: %s\n", result.ID, result.Title, result.Content, result.Expires)
-
-	return &result, nil
+	return &snippet, nil
 }
 
 func (s *SnippetModel) Latest() ([]*models.Snippet, error) {
-	results := []*models.Snippet{}
-	snippet := &models.Snippet{}
-	s.DB.Model(&snippet).Limit(10).Order("id desc").Find(&results)
-	if len(results) < 1 {
-		return results, models.ErrorRecords
+	var snippets []*models.Snippet
+	err := s.DB.Order("id desc").Limit(10).Find(&snippets).Error
+	if err != nil {
+		return nil, models.ErrorRecords
 	}
-	results = append(results, &models.Snippet{})
-	return results, nil
+	return snippets, nil
+}
+
+func (s *SnippetModel) Update(id int, title, content, expires string) error {
+	var snippet models.Snippet
+	err := s.DB.Model(&snippet).Where("id = ?", id).First(&snippet).Error
+	if err != nil {
+		return models.ErrorRecord
+	}
+	err = s.DB.Model(&snippet).Where("id = ?", id).Update("title", title).Error
+	if err != nil {
+		return models.ErrorRecord
+	}
+	err = s.DB.Model(&snippet).Where("id = ?", id).Update("content", content).Error
+	if err != nil {
+		return models.ErrorRecord
+	}
+	err = s.DB.Where("id = ?", id).Update("expires", expires).Error
+	if err != nil {
+		return models.ErrorRecord
+	}
+	return s.DB.Model(&snippet).Where("id = ?", id).Update("title", title).Error
+
 }
