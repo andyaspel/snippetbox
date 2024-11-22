@@ -13,14 +13,14 @@
 
 <body>
     <header>
-        <a href="/" aria-label="Start using Snippetbox"> <img src="/static/img/vecteezy_scissors.png" width="64"
-                height="64" alt="logo"></a>
+        <a href="/" aria-label="Start using Snippetbox"> <img src="/static/img/vecteezy_scissors.png" width="32"
+                height="48" alt="logo"></a>
         <h1>Snippetbox </h1>
-        {{template "nav-bar"}}
+        {{template "nav-bar" .}}
     </header>
 
     <main>
-            {{template "body" .}}
+        {{template "body" .}}
     </main>
     {{template "footer" .}}
 </body>

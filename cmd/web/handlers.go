@@ -67,12 +67,16 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 		app.clientError(w, http.StatusMethodNotAllowed)
 		return
 	}
-	title := "FUNCTION"
-	content := `func (s *SnippetModel) Insert(title, content, expires string) (int, error) {
+	title := "hmrn"
+	content :=
+		`func (s *SnippetModel) Insert(title, content, expires string) (int, error) {
 	snippet := &models.Snippet{Title: title, Content: content, Expires: expires}
-s.DB.Create(&snippet)	s.DB.Save(&snippet)	return int(snippet.ID), nil
+	s.DB.Create(&snippet) // pass a slice to insert multiple row\n\ts.DB.Save(&snippet)
+	fmt.Printf("\nNew record created on %v\nID: %d\t\tTitle: %s\nContent: %s\nExpires: %s\n", snippet.CreatedAt, snippet.ID, title, content, expires)
+	return int(snippet.ID), nil
 }
 `
+
 	expires := "8"
 	id, err := app.snippets.Insert(title, content, expires)
 	if err != nil {
