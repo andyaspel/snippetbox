@@ -21,12 +21,12 @@ header {
     grid-template-areas:
         "logo title title title .."
         "nav nav nav nav nav";
-        background-image: linear-gradient( rgb(165, 156, 156), rgba(211, 179, 179, 0.915), rgba(231, 207, 207, 0.826));
-        border-radius: 5em 5em 0 0;
+    background-image: linear-gradient(rgb(165, 156, 156), rgba(211, 179, 179, 0.915), rgba(231, 207, 207, 0.826));
+    border-radius: 5em 5em 0 0;
     align-self: top;
     width: 100dvw;
     min-height: 12dvh;
-    box-shadow:inset 1px -2px 2px rgb(1, 13, 52);
+    box-shadow: inset 1px -2px 2px rgb(1, 13, 52);
 
 }
 
@@ -90,9 +90,9 @@ main {
     padding: 1em 2em;
     flex-direction: column;
     color: rgb(198, 195, 195);
-    background-image: linear-gradient(to right, rgb(115, 137, 122), rgba(84, 67, 67, 0.915), rgba(75, 108, 71, 0.826));
+    background-image: linear-gradient(to right, rgb(115, 137, 122), rgba(84, 67, 67, 0.915), rgba(111, 153, 106, 0.826));
     min-height: 80dvh;
-    box-shadow: inset 1px 3px 18px  rgba(80, 31, 2, 0.816);
+    box-shadow: inset 1px 3px 18px rgba(80, 31, 2, 0.816);
 }
 
 footer {
@@ -101,9 +101,9 @@ footer {
     align-items: center;
     width: 100%;
     color: rgb(23, 27, 40);
-    background-image: linear-gradient( rgb(165, 156, 156), rgba(211, 179, 179, 0.915), rgba(231, 207, 207, 0.826));
+    background-image: linear-gradient(rgb(165, 156, 156), rgba(211, 179, 179, 0.915), rgba(231, 207, 207, 0.826));
     min-height: 8dvh;
-    box-shadow:inset 1px 2px 3px rgb(1, 13, 52);
+    box-shadow: inset 1px 2px 3px rgb(1, 13, 52);
 }
 
 .card-sm {
@@ -116,18 +116,48 @@ footer {
 }
 
 .card-lg {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    justify-content: space-between;
     background-image: linear-gradient(to right, rgba(238, 214, 214, 0.864), rgb(165, 142, 142), rgba(234, 195, 195, 0.881));
     border-radius: 0.8em 0.8em 0.1em 0.1em;
     padding: 0.4em 0.8em;
     color: rgb(6, 5, 53);
-    min-width: 90dvw;
     min-height: 25rem;
-    box-shadow:inset 1px -1px 10px rgb(1, 13, 52);
+    box-shadow: inset 1px -1px 10px rgb(1, 13, 52);
+}
+
+.metadata {
+    display: flex;
+    flex-direction: column;
+    font-size: 1rem;
+    letter-spacing: 0.2ch;
+    /* padding: 0.4em 0.8em; */
+}
+
+.metadata>span {
+    place-self: flex-end;
+}
+
+.metadata h2 {
+    place-self: center;
+}
+
+.metadata time {
+    place-self: center;
 }
 
 .content {
-    overflow-x: scroll;
+    place-self: center;
     font-size: 1rem;
     line-height: 1.6;
     letter-spacing: 0.2ch;
+    background-image: linear-gradient(to right, rgba(237, 221, 221, 0.241), rgba(224, 172, 172, 0.219));
+    border-radius: 0.8em 0.8em 0.1em 0.1em;
+    padding: 0.4em 0.8em;
+    color: rgb(6, 5, 53);
+    max-width: fit-content;
+    box-shadow: 1px -1px 10px rgba(1, 13, 52, 0.266);
+
 }
