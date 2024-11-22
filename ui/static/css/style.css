@@ -147,17 +147,21 @@ footer {
 .metadata time {
     place-self: center;
 }
-
+/* pre {
+display: flex;
+flex-direction: column;
+} */
 .content {
-    place-self: center;
-    font-size: 1rem;
+    /* place-self: center; */
+   /* margin-top: 1.3rem; */
+    font-size: 1.1rem;
     line-height: 1.6;
     letter-spacing: 0.2ch;
     background-image: linear-gradient(to right, rgba(237, 221, 221, 0.241), rgba(224, 172, 172, 0.219));
-    border-radius: 0.8em 0.8em 0.1em 0.1em;
-    padding: 0.4em 0.8em;
+    /* border-radius: 0.8em 0.8em 0.1em 0.1em; */
+    /* padding: 0.8em 1.2em; */
     color: rgb(6, 5, 53);
-    max-width: fit-content;
+    /* max-width: 40ch; */
     box-shadow: 1px -1px 10px rgba(1, 13, 52, 0.266);
 
 }
