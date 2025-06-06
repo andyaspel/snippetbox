@@ -2,6 +2,7 @@ package main
 
 import "net/http"
 
+// refactor to call a config file to build/load routes
 func (app *application) routes() *http.ServeMux {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", app.home)

@@ -1,3 +1,13 @@
+/* make stylesheet with custom variables, resets and body layout */
+/* make dictionary for standard variable naming conventions */
+/* make stylesheet for each component intergrating standard naming */
+/* keep up to date and store in re-usable directory */
+/* base stylesheet should contain all @container, @media queries */
+/* base stylesheet elements should have default border to highlight
+    real estate floor plan on different devices, sizes. Turn on off 
+    by using custom variable as root controller                   */
+/* remove these comments before production */
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -10,8 +20,14 @@ html {
 }
 
 body {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: 1.5fr auto-fit 1fr;
     background-color: rgba(58, 59, 60, 0.899);
     color: rgb(218, 219, 250);
+    /* width: 95vw; */
+    /* min-height: 99vh; */
+    padding: 0 1em;
 }
 
 header {
@@ -24,19 +40,17 @@ header {
     background-image: linear-gradient(rgb(165, 156, 156), rgba(211, 179, 179, 0.915), rgba(231, 207, 207, 0.826));
     border-radius: 5em 5em 0 0;
     align-self: top;
-    width: 100dvw;
-    min-height: 12dvh;
+    padding-bottom: 0.8em;
     box-shadow: inset 1px -2px 2px rgb(1, 13, 52);
-
 }
 
 header>a {
-    position: absolute;
-    top: 1em;
-    left: 1.3em;
     grid-area: logo;
     padding: 0.6em 0.2em;
     transform: rotate(42deg);
+    place-self: flex-start;
+    position: absolute;
+    left: 2.3em;
 }
 
 
@@ -44,13 +58,14 @@ header h1 {
     letter-spacing: 0.2ch;
     grid-area: title;
     justify-self: center;
-    font-size: 2.4rem;
+    font-size: 4.8rem;
     color: rgba(23, 27, 40, 0.716);
-    font-weight: 900;
+    font-weight: 700;
     margin-block: 0;
+
 }
 
-@media screen and (max-width: 25rem) {
+@media screen and (max-width: 28rem) {
     header>a {
         display: none;
     }
@@ -63,47 +78,78 @@ header h1 {
 nav {
     grid-area: nav;
     justify-self: center;
+    position: relative;
+
+
 }
 
 nav ul {
+
+    position: absolute;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    justify-content: center;
+    top: 0.9em;
     width: 100%;
     gap: 0.6em;
     padding: 0;
+    width: 100%;
+
 }
 
 nav>ul>li>a {
     color: rgb(6, 5, 53);
     font-size: 1.2rem;
     font-weight: 500;
+
 }
 
 li {
+    box-shadow: 0.05em -0.05em rgb(79, 80, 80);
+    border: solid rgb(79, 80, 80) 0.01em;
+    position: relative;
     list-style: none;
+    background-image: linear-gradient(rgb(192, 143, 143), rgba(179, 157, 157, 0.915), rgba(179, 147, 147, 0.826));
+    padding: 0.1em 0.6em 0.4em;
+
+
 }
 
 main {
+    margin-top: 1em;
     font-size: 1.3rem;
     display: flex;
     padding: 1em 2em;
     flex-direction: column;
+    flex-wrap: wrap;
     color: rgb(198, 195, 195);
-    background-image: linear-gradient(to right, rgb(115, 137, 122), rgba(84, 67, 67, 0.915), rgba(111, 153, 106, 0.826));
-    min-height: 80dvh;
+    background-image: linear-gradient(to right, rgb(115, 137, 122), rgba(84, 67, 67, 0.915), rgba(66, 82, 64, 0.826));
+    /* height: 100%; */
     box-shadow: inset 1px 3px 18px rgba(80, 31, 2, 0.816);
+    min-height: 95vh;
+
 }
 
-footer {
+footer>section {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    gap: 1em;
+    font-size: 120%;
+    /* width: 100%; */
     color: rgb(23, 27, 40);
     background-image: linear-gradient(rgb(165, 156, 156), rgba(211, 179, 179, 0.915), rgba(231, 207, 207, 0.826));
-    min-height: 8dvh;
+    /* height: 20%; */
     box-shadow: inset 1px 2px 3px rgb(1, 13, 52);
+    padding: 1em;
+}
+
+footer>section>p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5em;
+    font-size: 100%;
 }
 
 .card-sm {
@@ -116,6 +162,7 @@ footer {
 }
 
 .card-lg {
+    place-items: center;
     display: flex;
     flex-direction: column;
     gap: 0.5em;
@@ -126,17 +173,23 @@ footer {
     color: rgb(6, 5, 53);
     min-height: 25rem;
     box-shadow: inset 1px -1px 10px rgb(1, 13, 52);
+    /* min-width: fit-content; */
 }
 
 .metadata {
     display: flex;
     flex-direction: column;
-    font-size: 1rem;
+    /* font-size: 0.5rem; */
     letter-spacing: 0.2ch;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
 }
 
 .metadata>span {
     place-self: flex-end;
+    padding: 1em;
 }
 
 .metadata h2 {
@@ -148,10 +201,14 @@ footer {
 }
 
 .content {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
+    font-weight: 700;
     line-height: 1.6;
     letter-spacing: 0.2ch;
+    /* padding-right: 0.5em; */
     background-image: linear-gradient(to right, rgba(237, 221, 221, 0.241), rgba(224, 172, 172, 0.219));
-    color: rgb(6, 5, 53);
+    color: rgb(1, 7, 52);
     box-shadow: 1px -1px 10px rgba(1, 13, 52, 0.266);
+    /* width: 100%; */
+    /* min-width: 26ch; */
 }

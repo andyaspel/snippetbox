@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"html/template"
 	"log"
 	"net/http"
 	"os"
@@ -9,20 +10,21 @@ import (
 	"github.com/andyaspel/snippetbox/pkg/models"
 	"github.com/andyaspel/snippetbox/pkg/models/sqlte"
 
-	"gorm.io/driver/sqlite"
+	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 )
 
 type application struct {
-	errorLog *log.Logger
-	infoLog  *log.Logger
-	snippets *sqlte.SnippetModel
+	errorLog      *log.Logger
+	infoLog       *log.Logger
+	snippets      *sqlte.SnippetModel
+	templateCache map[string]*template.Template
 }
 
 func main() {
 
 	addr := flag.String("addr", ":4000", "HTTP network address")
-	flag.Parse()
+	flag.Parse() // important!!!
 
 	infoLog := log.New(os.Stdout, "\nINFO:\n\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "\nERROR:\n\t", log.Ldate|log.Ltime|log.Lshortfile)
@@ -31,16 +33,23 @@ func main() {
 	if err != nil {
 		errorLog.Fatal(err)
 	}
+
 	var Snippet models.Snippet
 	err = db.AutoMigrate(&Snippet)
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	templateCache, err := newTemplateCache("./ui/html/")
+	if err != nil {
+		errorLog.Fatal(err)
+	}
+
 	app := &application{
-		errorLog: errorLog,
-		infoLog:  infoLog,
-		snippets: &sqlte.SnippetModel{DB: db},
+		errorLog:      errorLog,
+		infoLog:       infoLog,
+		snippets:      &sqlte.SnippetModel{DB: db},
+		templateCache: templateCache,
 	}
 
 	srv := &http.Server{

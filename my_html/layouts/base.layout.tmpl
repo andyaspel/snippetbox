@@ -1,0 +1,28 @@
+{{define "base"}}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{template "head" .}}
+</head>
+
+<body>
+    <header>
+        {{template "header" .}}
+    </header>
+    <nav>
+        {{template "nav-bar" .}}
+    </nav>
+    <main>
+        {{template "main" .}}
+    </main>
+    <aside>
+        {{template "side-bar" .}}
+    </aside>
+    <footer>
+        {{template "footer" .}}
+    </footer>
+</body>
+
+</html>
+{{end}}

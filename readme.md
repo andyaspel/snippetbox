@@ -25,3 +25,17 @@ and using go templates for frontend
   come back and see where improvements
   are needed
  
+### TODO
+- design project structure
+  - dir for templates
+  - dir for re-useable template-components
+  - dir for cmd files
+  - dir for routes
+    - dir for each service needed - act as plug/play structure
+- put an index.html in static dir
+- design css containers for templates
+- design responsive stylesheet
+- design routes to be plug/play units
+  - design conditions needed to make this happen
+  - ++ extra's
+- more to follow

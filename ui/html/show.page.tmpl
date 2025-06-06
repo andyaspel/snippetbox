@@ -3,18 +3,20 @@
 {{define "title"}}Snippet ID:{{.Snippet.ID}}{{end}}
 {{define "body"}}
 {{with .Snippet}}
+<!-- redesign this page for new content -->
 <section class="snippet">
-    <article class="card-lg">
+    <samp class="card-lg">
         <div class="metadata">
-            <h2><strong>{{.Title}}</strong></h2>
             <span>ID: {{.ID}}</span>
+            <h2><strong>{{.Title}}</strong></h2>
         </div>
-        <pre><code class="content">{{.Content}}</code></pre>
+
+        <pre> <samp><code class="content">{{.Content}}</code></samp></pre>
         <div class="metadata">
             <time>Created: {{.CreatedAt}}</time>
             <time>Expires: {{.Expires}}</time>
         </div>
-    </article>
+        </article>
 </section>
 {{end}}
 {{end}}

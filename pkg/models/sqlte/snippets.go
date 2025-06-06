@@ -11,6 +11,7 @@ type SnippetModel struct {
 	DB *gorm.DB `gorm:"embedded"`
 }
 
+// data should have been sanitized, validated, verified, etc before this stage in pipe-line
 func (s *SnippetModel) Insert(title, content, expires string) (int, error) {
 	snippet := &models.Snippet{Title: title, Content: content, Expires: expires}
 	s.DB.Create(&snippet) // pass a slice to insert multiple row
