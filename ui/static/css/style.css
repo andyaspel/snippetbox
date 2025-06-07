@@ -143,6 +143,11 @@ footer>section {
     box-shadow: inset 1px 2px 3px rgb(1, 13, 52);
     padding: 1em;
 }
+footer>section>h2>span {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: rgb(6, 5, 53);
+}
 
 footer>section>p {
     display: flex;
