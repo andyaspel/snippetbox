@@ -10,9 +10,11 @@ import (
 type templateData struct {
 	Snippet  *models.Snippet
 	Snippets []*models.Snippet
+	List     *models.List
+	Lists    []*models.List
 }
 
-// study function patterns
+// study function  use print function to log output
 func newTemplateCache(dir string) (map[string]*template.Template, error) {
 	cache := map[string]*template.Template{}
 	pages, err := filepath.Glob(filepath.Join(dir, "*.page.tmpl"))
@@ -26,17 +28,20 @@ func newTemplateCache(dir string) (map[string]*template.Template, error) {
 		if err != nil {
 			return nil, err
 		}
-
+		// print ts
 		ts, err = ts.ParseGlob(filepath.Join(dir, "*.layout.tmpl"))
 		if err != nil {
 			return nil, err
 		}
-
+		// print ts
 		ts, err = ts.ParseGlob(filepath.Join(dir, "*.partial.tmpl"))
 		if err != nil {
 			return nil, err
 		}
+		// print ts
+
 		cache[name] = ts
+		// print cache
 	}
 
 	return cache, nil

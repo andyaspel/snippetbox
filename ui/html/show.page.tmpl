@@ -1,6 +1,6 @@
 {{template "base" .}}
 
-{{define "title"}}Snippet ID:{{.Snippet.ID}}{{end}}
+{{define "title"}}{{end}}
 {{define "body"}}
 {{with .Snippet}}
 <!-- redesign this page for new content -->
@@ -15,6 +15,22 @@
         <div class="metadata">
             <time>Created: {{.CreatedAt}}</time>
             <time>Expires: {{.Expires}}</time>
+        </div>
+        </article>
+</section>
+{{end}}
+{{with .List}}
+<section class="snippet">
+    <samp class="card-lg">
+        <div class="metadata">
+            <span>ID: {{.ID}}</span>
+            <h2><strong>{{.Title}}</strong></h2>
+        </div>
+
+        <pre> <samp><code class="content">{{.Content}}</code></samp></pre>
+        <div class="metadata">
+            <time>Created: {{.CreatedAt}}</time>
+            <time>Expires: {{.Done}}</time>
         </div>
         </article>
 </section>

@@ -18,6 +18,7 @@ type application struct {
 	errorLog      *log.Logger
 	infoLog       *log.Logger
 	snippets      *sqlte.SnippetModel
+	lists         *sqlte.ListModel
 	templateCache map[string]*template.Template
 }
 
@@ -29,13 +30,22 @@ func main() {
 	infoLog := log.New(os.Stdout, "\nINFO:\n\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "\nERROR:\n\t", log.Ldate|log.Ltime|log.Lshortfile)
 
-	db, err := connectToSQLite()
+	db, err := connectToSnippets()
 	if err != nil {
 		errorLog.Fatal(err)
 	}
 
 	var Snippet models.Snippet
 	err = db.AutoMigrate(&Snippet)
+	if err != nil {
+		log.Fatal(err)
+	}
+	db1, err := connectToLists()
+	if err != nil {
+		errorLog.Fatal(err)
+	}
+	var List models.List
+	err = db1.AutoMigrate(&List)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -49,6 +59,7 @@ func main() {
 		errorLog:      errorLog,
 		infoLog:       infoLog,
 		snippets:      &sqlte.SnippetModel{DB: db},
+		lists:         &sqlte.ListModel{DB: db1},
 		templateCache: templateCache,
 	}
 
@@ -64,8 +75,16 @@ func main() {
 
 }
 
-func connectToSQLite() (*gorm.DB, error) {
+func connectToSnippets() (*gorm.DB, error) {
 	db, err := gorm.Open(sqlite.Open("./db/snippets.db"), &gorm.Config{})
+	if err != nil {
+		return nil, err
+	}
+
+	return db, nil
+}
+func connectToLists() (*gorm.DB, error) {
+	db, err := gorm.Open(sqlite.Open("./db/lists.db"), &gorm.Config{})
 	if err != nil {
 		return nil, err
 	}

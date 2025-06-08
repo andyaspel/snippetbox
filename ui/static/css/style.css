@@ -217,3 +217,18 @@ footer>section>p {
     /* width: 100%; */
     /* min-width: 26ch; */
 }
+td, tr{
+    padding: 0.2em 0.4em;
+}
+.id {
+    font-weight: 700;
+    /* color: rgb(6, 5, 53); */
+    font-size: 0.8rem;
+}
+table {
+    margin-top: 1rem;
+}
+.table-title {
+    margin-top: 1rem;
+    padding-left: 5rem;
+}

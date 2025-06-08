@@ -15,3 +15,10 @@ type Snippet struct {
 	Content string
 	Expires string
 }
+
+type List struct {
+	gorm.Model
+	Title   string
+	Content string
+	Done    bool
+}
