@@ -3,6 +3,7 @@ package main
 import (
 	"html/template"
 	"path/filepath"
+	"time"
 
 	"github.com/andyaspel/snippetbox/pkg/models"
 )
@@ -12,6 +13,15 @@ type templateData struct {
 	Snippets []*models.Snippet
 	List     *models.List
 	Lists    []*models.List
+}
+
+func humanDate(t time.Time) string {
+	// Format the time as "2 Jan 2006 at 15:04"
+	return t.Format("2 Jan 2006 at 15:04")
+}
+
+var functions = template.FuncMap{
+	"humanDate": humanDate,
 }
 
 // study function  use print function to log output
@@ -24,7 +34,7 @@ func newTemplateCache(dir string) (map[string]*template.Template, error) {
 
 	for _, page := range pages {
 		name := filepath.Base(page)
-		ts, err := template.ParseFiles(page)
+		ts, err := template.New(name).Funcs(functions).ParseFiles(page)
 		if err != nil {
 			return nil, err
 		}

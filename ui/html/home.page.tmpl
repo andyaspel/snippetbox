@@ -18,7 +18,7 @@
             <td class="id">id: {{.ID}}</td>
 
             <td><a href='/snippet?id={{.ID}}'>{{.Title}}</a></td>
-            <td>{{.CreatedAt}}</td>
+            <td>{{humanDate .CreatedAt}}</td>
         </tr>
         {{end}}
     </table>
@@ -44,7 +44,7 @@
             <td class="id"><em>id: {{.ID}}</em></td>
             <td><a href='/list?id={{.ID}}'>{{.Title}}</a></td>
             <td><strong>{{.Content}}</strong></td>
-            <td><em>{{.CreatedAt}}</em></td>
+            <td><em>{{humanDate .CreatedAt}}</em></td>
         </tr>
         {{end}}
     </table>
