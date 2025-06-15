@@ -3,7 +3,7 @@
 {{define "title"}}Home{{end}}
 {{define "body"}}
 <!-- design home page -->
-<section>
+<section class="home">
     <h2 class="table-title">Latest Snippets</h2>
     {{if .Snippets}}
     <table>
@@ -28,7 +28,8 @@
 
 </section>
 
-<section>
+<section class="home">
+    helpful links
     <h2 class="table-title">Latest Lists</h2>
     {{if .Lists}}
     <table>
