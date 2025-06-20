@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-var ErrorRecord = errors.New("models: No mathching record found")
+var ErrorRecord = errors.New("models: No matching record found")
 var ErrorRecords = errors.New("models: No records found - table is empty")
 
 type Snippet struct {
