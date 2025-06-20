@@ -91,3 +91,10 @@ func connectToLists() (*gorm.DB, error) {
 
 	return db, nil
 }
+func connectToLogs() (*gorm.DB, error) {
+	db, err := gorm.Open(sqlite.Open("./db/logs.db"), &gorm.Config{})
+	if err != nil {
+		return nil, err
+	}
+	return db, nil
+}

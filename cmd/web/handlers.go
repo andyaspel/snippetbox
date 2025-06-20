@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	// "github.com/andyaspel/snippetbox/pkg/models"
+
+	"github.com/andyaspel/snippetbox/pkg/models"
 )
 
 // PAGES
@@ -169,4 +170,28 @@ func (app *application) createList(w http.ResponseWriter, r *http.Request) {
 	// Redirect the user to the relevant page for the list.
 	http.Redirect(w, r, fmt.Sprintf("/list?id=%d", id), http.StatusSeeOther)
 
+}
+
+// LOGS
+func (app *application) showLogs(w http.ResponseWriter, r *http.Request) {
+	var logs []models.Log
+	db, err := connectToLogs()
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+	db.Order("id desc").Limit(100).Find(&logs)
+	var logEntries []logEntry
+	for _, l := range logs {
+		logEntries = append(logEntries, logEntry{
+			Time:      l.Time,
+			Method:    l.Method,
+			URL:       l.URL,
+			Status:    l.Status,
+			Duration:  l.Duration,
+			Remote:    l.Remote,
+			UserAgent: l.UserAgent,
+		})
+	}
+	app.render(w, r, "logs.page.tmpl", templateData{Logs: logEntries})
 }

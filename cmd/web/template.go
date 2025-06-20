@@ -8,11 +8,22 @@ import (
 	"github.com/andyaspel/snippetbox/pkg/models"
 )
 
+type logEntry struct {
+	Time      string
+	Method    string
+	URL       string
+	Status    int
+	Duration  string
+	Remote    string
+	UserAgent string
+}
+
 type templateData struct {
 	Snippet  *models.Snippet
 	Snippets []*models.Snippet
 	List     *models.List
 	Lists    []*models.List
+	Logs     []logEntry
 }
 
 func humanDate(t time.Time) string {

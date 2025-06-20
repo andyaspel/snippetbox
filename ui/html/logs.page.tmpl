@@ -1,0 +1,36 @@
+{{template "base" .}}
+
+{{define "title"}}Logs{{end}}
+{{define "body"}}
+<section class="logs">
+    <div class="card-lg">
+        <h2><strong>Application Logs</strong></h2>
+        <table class="logs-table">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Method</th>
+                    <th>URL</th>
+                    <th>Status</th>
+                    <th>Duration</th>
+                    <th>Remote</th>
+                    <th>User Agent</th>
+                </tr>
+            </thead>
+            <tbody>
+            {{range .Logs}}
+                <tr>
+                    <td>{{.Time}}</td>
+                    <td>{{.Method}}</td>
+                    <td>{{.URL}}</td>
+                    <td>{{.Status}}</td>
+                    <td>{{.Duration}}</td>
+                    <td>{{.Remote}}</td>
+                    <td>{{.UserAgent}}</td>
+                </tr>
+            {{end}}
+            </tbody>
+        </table>
+    </div>
+</section>
+{{end}}

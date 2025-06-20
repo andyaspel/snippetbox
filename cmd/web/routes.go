@@ -12,6 +12,7 @@ func (app *application) routes() http.Handler {
 	mux.HandleFunc("/snippet/create", app.createSnippet)
 	mux.HandleFunc("/list", app.showList)
 	mux.HandleFunc("/list/create", app.createList)
+	mux.HandleFunc("/logs", app.showLogs)
 	// cleanPath := filepath.Clean("./ui/static/")
 	fileServer := http.FileServer(http.Dir("./ui/static/"))
 	mux.Handle("/static/", http.StripPrefix("/static", fileServer))

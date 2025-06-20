@@ -22,3 +22,16 @@ type List struct {
 	Content string
 	Done    bool
 }
+
+// Log model for DB
+// Add to models.go
+type Log struct {
+	gorm.Model
+	Time      string
+	Method    string
+	URL       string
+	Status    int
+	Duration  string
+	Remote    string
+	UserAgent string
+}
