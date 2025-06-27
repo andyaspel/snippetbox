@@ -28,9 +28,8 @@
 
 </section>
 
-hello
 <section class="home">
-  
+
     <h2 class="table-title">Latest Lists</h2>
     {{if .Lists}}
     <table>
@@ -46,6 +45,34 @@ hello
             <td class="id"><em>id: {{.ID}}</em></td>
             <td><a href='/list?id={{.ID}}'>{{.Title}}</a></td>
             <td><strong>{{.Content}}</strong></td>
+            <td><em>{{humanDate .CreatedAt}}</em></td>
+        </tr>
+        {{end}}
+    </table>
+    {{else}}
+    <p>There's nothing to see here... yet!</p>
+    {{end}}
+
+</section>
+<section class="home">
+
+    <h2 class="table-title">Latest Logs</h2>
+    {{if .Lists}}
+    <table>
+        <tr>
+            <th>id</th>
+
+            <th>Time</th>
+            <th>URL</th>
+            <th>Status</th>
+        </tr>
+        {{range .Logs}}
+        <tr>
+            <td class="id"><em>id: {{.ID}}</em></td>
+            <td><a href='/logs?id={{.ID}}'>{{.Time}}</a></td>
+            <td><strong>{{.URL}}</strong></td>
+            <td><strong>{{.Status}}</strong></td>
+
             <td><em>{{humanDate .CreatedAt}}</em></td>
         </tr>
         {{end}}

@@ -23,7 +23,7 @@ type templateData struct {
 	Snippets []*models.Snippet
 	List     *models.List
 	Lists    []*models.List
-	Logs     []logEntry
+	Logs     []*models.Log
 }
 
 func humanDate(t time.Time) string {

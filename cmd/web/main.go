@@ -19,6 +19,7 @@ type application struct {
 	infoLog       *log.Logger
 	snippets      *sqlte.SnippetModel
 	lists         *sqlte.ListModel
+	logs          *sqlte.LogModel
 	templateCache map[string]*template.Template
 }
 
@@ -49,6 +50,15 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	db2, err := connectToLogs()
+	if err != nil {
+		errorLog.Fatal(err)
+	}
+	var Log models.Log
+	err = db2.AutoMigrate(&Log)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	templateCache, err := newTemplateCache("./ui/html/")
 	if err != nil {
@@ -60,6 +70,7 @@ func main() {
 		infoLog:       infoLog,
 		snippets:      &sqlte.SnippetModel{DB: db},
 		lists:         &sqlte.ListModel{DB: db1},
+		logs:          &sqlte.LogModel{DB: db2},
 		templateCache: templateCache,
 	}
 
@@ -91,6 +102,7 @@ func connectToLists() (*gorm.DB, error) {
 
 	return db, nil
 }
+
 func connectToLogs() (*gorm.DB, error) {
 	db, err := gorm.Open(sqlite.Open("./db/logs.db"), &gorm.Config{})
 	if err != nil {

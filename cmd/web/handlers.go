@@ -25,9 +25,15 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, err)
 		return
 	}
+	lg, err := app.logs.Latest()
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
 	app.render(w, r, "home.page.tmpl", templateData{
 		Snippets: s,
 		Lists:    l,
+		Logs:     lg,
 	})
 }
 func (app *application) about(w http.ResponseWriter, r *http.Request) {
@@ -174,24 +180,17 @@ func (app *application) createList(w http.ResponseWriter, r *http.Request) {
 
 // LOGS
 func (app *application) showLogs(w http.ResponseWriter, r *http.Request) {
-	var logs []models.Log
-	db, err := connectToLogs()
-	if err != nil {
-		app.serverError(w, err)
+	id, err := strconv.Atoi(r.URL.Query().Get("id"))
+	if err != nil || id < 1 {
+		app.notFound(w)
+		fmt.Println("NOT A VALID ID")
 		return
 	}
-	db.Order("id desc").Limit(100).Find(&logs)
-	var logEntries []logEntry
-	for _, l := range logs {
-		logEntries = append(logEntries, logEntry{
-			Time:      l.Time,
-			Method:    l.Method,
-			URL:       l.URL,
-			Status:    l.Status,
-			Duration:  l.Duration,
-			Remote:    l.Remote,
-			UserAgent: l.UserAgent,
-		})
+	l, err := app.logs.Get(id) // Get the record
+	if err != nil {
+		app.notFound(w)
+		fmt.Println("RECORD NOT FOUND with ID - ", id)
+		return
 	}
-	app.render(w, r, "logs.page.tmpl", templateData{Logs: logEntries})
+	app.render(w, r, "logs.page.tmpl", templateData{Logs: []*models.Log{l}})
 }

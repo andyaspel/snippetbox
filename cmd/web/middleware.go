@@ -7,10 +7,11 @@ import (
 
 	"log"
 
-	"github.com/andyaspel/snippetbox/pkg/models"
 	"github.com/fatih/color"
 	"github.com/natefinch/lumberjack"
 	"golang.org/x/time/rate"
+
+	"github.com/andyaspel/snippetbox/pkg/models"
 )
 
 func SecureHeaders(next http.Handler) http.Handler {
@@ -22,7 +23,7 @@ func SecureHeaders(next http.Handler) http.Handler {
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 		w.Header().Set("X-XSS-Protection", "0") // Modern browsers ignore this, CSP is preferred
 		// Content Security Policy: adjust as needed for your app
-		w.Header().Set("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none';")
+		w.Header().Set("Content-Security-Policy", "frame-ancestors 'none';")
 		// Referrer Policy
 		w.Header().Set("Referrer-Policy", "strict-origin-when-cross-origin")
 		// Permissions Policy (formerly Feature Policy)
@@ -129,6 +130,15 @@ func Logging(next http.Handler) http.Handler {
 			UserAgent: r.UserAgent(),
 		}
 		logger.Printf("%+v", logEntry)
+		// db2, err := connectToLogs()
+		// if err != nil {
+		// 	logger.Fatal(err)
+		// }
+		// var Log models.Log
+		// err = db2.AutoMigrate(&Log)
+		// if err != nil {
+		// 	log.Fatal(err)
+		// }
 		logToDB(logEntry)
 
 		// Terminal output with color
